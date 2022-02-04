@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <link rel="stylesheet" href="/css/style.css"/>
+        <title>{% block title %}{% endblock %} - Astro Core</title>
+    {% endblock %}
+</head>
+<body>
+
+{% include 'partials/header.html.twig' %}
+
+
+{% include 'partials/content.html.twig' %}
+
+
+{% include 'partials/footer.html.twig' %}
+
+{% block scripts %}
+    <script defer src="/js/index.js"></script>
+{% endblock %}
+</body>
+</html>
