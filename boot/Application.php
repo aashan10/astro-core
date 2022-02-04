@@ -1,5 +1,6 @@
 <?php
 
+use Astro\Exceptions\InvalidHttpMethodCallException;
 use Astro\Exceptions\RouteNotFoundException;
 use DI\Container;
 use DI\ContainerBuilder;
@@ -89,12 +90,19 @@ class Application
         if ($activeRoute->count() <= 0) {
             throw new RouteNotFoundException($this->getActiveMethod(), $pathInfo);
         }
-        return $activeRoute->first();
+
+        $activeRoute = $activeRoute->filter(function ($route) {
+            return strtolower($route['method']) !== $this->getActiveMethod();
+        })->first();
+        if (!$activeRoute) {
+            throw new InvalidHttpMethodCallException($this->getActiveMethod(), $pathInfo);
+        }
+        return $activeRoute;
     }
 
     private function getActiveMethod(): string
     {
-        return $this->request->getMethod();
+        return strtolower($this->request->getMethod());
     }
 
     private function initializeRequest()
