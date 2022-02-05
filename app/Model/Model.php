@@ -2,10 +2,8 @@
 
 namespace Astro\Model;
 
-use Astro\Core\Connection;
-use Astro\Core\Data\DataObject;
+use Astro\Core\Database\Connection;
 use Astro\Core\Database\CrudQueries;
-use Illuminate\Support\Collection;
 
 abstract class Model extends CrudQueries
 {
