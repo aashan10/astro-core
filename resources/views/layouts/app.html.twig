@@ -11,12 +11,16 @@
 {% include 'partials/header.html.twig' %}
 
 
-{% include 'partials/content.html.twig' %}
-
+<div class="bg-gray-200">
+    {% block content %}
+    {% endblock %}
+</div>
 
 {% include 'partials/footer.html.twig' %}
 
 {% block scripts %}
+    <script defer src="/js/manifest.js"></script>
+    <script defer src="/js/react.min.js"></script>
     <script defer src="/js/index.js"></script>
 {% endblock %}
 </body>
