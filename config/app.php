@@ -1,13 +1,12 @@
 <?php
 
-use Astro\Core\Connection;
+use Astro\Core\Database\Connection;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
-use function DI\create;
 use function DI\factory;
 
 $twigFactory = factory(function(ContainerInterface  $container){
@@ -43,7 +42,7 @@ return [
     Connection::class => factory(function (ContainerInterface $container) {
         $db = new PDO($container->get('db_dsn'), $container->get('db_user'), $container->get('db_pass'));
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return new Connection($db);
+        return Connection::getInstance($db);
     }),
 
 ];
