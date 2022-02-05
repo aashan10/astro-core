@@ -3,3 +3,8 @@ node_modules/
 vendor/
 generated/
 *.lock
+.env
+public/js
+public/css
+public/images
+public/mix-manifest.json
