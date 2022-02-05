@@ -2,7 +2,6 @@
 
 namespace Astro\Core\Database;
 
-use Astro\Core\Connection;
 use Astro\Core\Data\DataObject;
 use Astro\Exceptions\NotFoundException;
 
@@ -59,9 +58,10 @@ abstract class CrudQueries
             $fields = implode(',', $fields);
         }
 
+        $query = 'SELECT ' . $fields . ' from ' . $this->getTable() . ' WHERE ' . $column . ' = \'' . $id . '\'';
         $record = $this->getConnection()
             ->getDb()
-            ->query('SELECT ' . $fields . ' from ' . $this->getTable() . ' WHERE ' . $column . ' = ' . $id)
+            ->query($query)
             ->fetchObject(static::class, [$this->getConnection()]);
         if (!$record) {
             throw new NotFoundException('Record not found!');
