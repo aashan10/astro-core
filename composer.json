@@ -1,24 +1,26 @@
 {
-    "name": "aashan/astro-core",
-    "require": {
-        "illuminate/collections": "^8.82",
-        "php-di/php-di": "^6.3",
-        "filp/whoops": "^2.14",
-        "symfony/http-foundation": "^5.4",
-        "twig/twig": "^3.0"
-    },
-    "require-dev": {
-        "symfony/var-dumper": "^5.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "Astro\\": "app/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Aashan Ghimire",
-            "email": "ashanghimire10@gmail.com"
-        }
-    ]
+  "name": "aashan/astro-core",
+  "require": {
+    "illuminate/collections": "^8.82",
+    "php-di/php-di": "^6.3",
+    "filp/whoops": "^2.14",
+    "symfony/http-foundation": "^5.4",
+    "twig/twig": "^3.0",
+    "vlucas/phpdotenv": "^5.4",
+    "ext-pdo": "*"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Astro\\": "app/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Aashan Ghimire",
+      "email": "ashanghimire10@gmail.com"
+    }
+  ]
 }
