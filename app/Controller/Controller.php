@@ -7,7 +7,7 @@ use DI\Container;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-abstract class AbstractController
+abstract class Controller
 {
     /**
      * @var Container

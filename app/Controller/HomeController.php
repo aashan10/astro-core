@@ -2,11 +2,10 @@
 
 namespace Astro\Controller;
 
-use DI\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends AbstractController
+class HomeController extends Controller
 {
 
     public function index(Request $request): Response
