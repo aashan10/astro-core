@@ -4,8 +4,12 @@ use Astro\Exceptions\InvalidHttpMethodCallException;
 use Astro\Exceptions\RouteNotFoundException;
 use DI\Container;
 use DI\ContainerBuilder;
+use Dotenv\Dotenv;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Whoops\Handler\Handler;
+use Whoops\Run;
 
 class Application
 {
@@ -25,12 +29,13 @@ class Application
 
     public function __construct()
     {
+        $this->initializeEnvironment();
         $this->initializeContainer();
         $this->initializePrettyErrors();
         $this->initializeRequest();
     }
 
-    private function initializeContainer()
+    protected function initializeContainer()
     {
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->addDefinitions(BASE_PATH . '/config/app.php');
@@ -40,7 +45,7 @@ class Application
         $this->container = $containerBuilder->build();
     }
 
-    private function initializePrettyErrors()
+    protected function initializePrettyErrors()
     {
         $whoops = $this->container->get('whoops');
         $whoops->pushHandler($this->container->get('whoops.page_handler'));
@@ -55,17 +60,26 @@ class Application
     public function run()
     {
         $this->initializeRoutes();
-        $activeRoute = $this->getActiveRoute();
-        [
-            'controller' => $controllerName,
-            'method' => $methodName
-        ] = $activeRoute['action'];
+        try {
+            $activeRoute = $this->getActiveRoute();
+            [
+                'controller' => $controllerName,
+                'method' => $methodName
+            ] = $activeRoute['action'];
 
-        $controller = $this->container->get($controllerName);
-        $this->container->call([$controller, $methodName]);
+            $controller = $this->container->get($controllerName);
+            return $this->container->call([$controller, $methodName]);
+        } catch (Exception $e) {
+            if($e instanceof RouteNotFoundException) {
+                $twig = $this->container->get('twig');
+                $response  = $this->container->get(Response::class);
+                return $response->setContent($twig->render('pages/404.html.twig'))->setStatusCode(404)->send();
+            }
+            throw $e;
+        }
     }
 
-    private function initializeRoutes()
+    protected function initializeRoutes()
     {
         if (!$this->routes) {
             $routesPath = $this->container->get('routes_path');
@@ -81,18 +95,18 @@ class Application
         return $this->request->getPathInfo();
     }
 
-    private function getActiveRoute(): array
+    protected function getActiveRoute(): array
     {
         $pathInfo = $this->getPathInfo();
         $activeRoute = $this->routes->filter(function ($route) use ($pathInfo) {
             return @preg_match($route['path'], $pathInfo);
         });
         if ($activeRoute->count() <= 0) {
-            throw new RouteNotFoundException($this->getActiveMethod(), $pathInfo);
+            throw new RouteNotFoundException($pathInfo, $this->getActiveMethod());
         }
 
         $activeRoute = $activeRoute->filter(function ($route) {
-            return strtolower($route['method']) !== $this->getActiveMethod();
+            return strtolower($route['method']) === $this->getActiveMethod();
         })->first();
         if (!$activeRoute) {
             throw new InvalidHttpMethodCallException($this->getActiveMethod(), $pathInfo);
@@ -100,13 +114,19 @@ class Application
         return $activeRoute;
     }
 
-    private function getActiveMethod(): string
+    protected function getActiveMethod(): string
     {
         return strtolower($this->request->getMethod());
     }
 
-    private function initializeRequest()
+    protected function initializeRequest()
     {
         $this->request = $this->container->get(Request::class);
+    }
+
+    private function initializeEnvironment()
+    {
+        $env = Dotenv::createImmutable(BASE_PATH);
+        $env->load();
     }
 }
