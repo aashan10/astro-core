@@ -1,19 +1,23 @@
 <?php
 namespace Astro\Core;
 
+use PDO;
+
+use function DI\get;
 
 class Connection {
+    protected $db;
 
-    static $instance = null;
-
-    protected function __construct() {
-
+    public function __construct(PDO $db) {
+        $this->db = $db;
     }
 
-    public static function getInstance() {
-        if(self::$instance !== null) {
-            return self::$instance;
-        }
-        return new Connection();
+    public function __destruct()
+    {
+        $this->db = null;
+    }
+
+    public function getDb() {
+        return $this->db;
     }
 }

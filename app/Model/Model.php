@@ -3,7 +3,7 @@ namespace Astro\Model;
 
 use Astro\Core\Connection;
 
-abstract class AbstractModel
+abstract class Model
 {
     protected $connection;
     protected $table;
