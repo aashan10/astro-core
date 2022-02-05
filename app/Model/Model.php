@@ -1,15 +1,16 @@
 <?php
+
 namespace Astro\Model;
 
 use Astro\Core\Connection;
+use Astro\Core\Data\DataObject;
+use Astro\Core\Database\CrudQueries;
+use Illuminate\Support\Collection;
 
-abstract class Model
+abstract class Model extends CrudQueries
 {
-    protected $connection;
-    protected $table;
-
-    public function __construct()
+    public function __construct(Connection $connection)
     {
-        $this->connection = Connection::getInstance();
+        $this->connection = $connection;
     }
 }
