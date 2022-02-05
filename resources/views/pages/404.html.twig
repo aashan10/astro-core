@@ -1,0 +1,37 @@
+{% extends "layouts/app.html.twig" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    {{ parent() }}
+    <div class="flex w-full flex-col mx-auto my-12">
+        <section class="flex w-full bg-white py-10">
+            <div class="w-full max-w-[1280px] mx-auto justify-between flex flex-col md:flex-row-reverse">
+                <div class="flex flex-1">
+                    <img src="https://error404.fun/img/full-preview/1x/16.png"  alt="Page Not Found"/>
+                </div>
+                <div class="flex flex-1 px-5 xl:px-0">
+                    <div class="flex flex-col">
+                        <div class="flex flex-1 overflow-clip">
+                            <h1 class="w-full text-center md:text-left text-[12.5rem] font-bold text-red-200 ">404</h1>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="font-bold text-4xl">Looks like you've found the doorway to the great nothing</h2>
+                            <p class="my-5">Sorry about that! Please visit our homepage to get where you need to go.</p>
+                        </div>
+                        <div class="flex">
+                            <div class="inline-flex rounded-md shadow overflow-hidden">
+                                <a href="/"
+                                   class=" inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-500 hover:bg-red-700">
+                                    Go to Homepage
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

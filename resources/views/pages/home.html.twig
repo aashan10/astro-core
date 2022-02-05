@@ -5,10 +5,36 @@
     {{ parent() }}
 {% endblock %}
 {% block content %}
-    <div class="flex w-full p-5">
-        <h1 class="text-6xl">Home</h1>
-        <p class="text-cyan-600">
-            Welcome on my awesome homepage.
-        </p>
+    {{ parent() }}
+    <div class="flex w-full flex-col mx-auto bg-white">
+        <section class="flex max-w-[1280px] mx-auto w-full py-10">
+            <div class="w-full flex flex-col-reverse sm:flex-row mx-auto">
+                <div class="flex flex-1 px-5">
+                    <div class="flex flex-col my-auto">
+                        <div class="flex flex-col text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                            <div class="block w-full text-center">Want your Kundali?</div>
+                            <div class="block w-full text-center text-red-500">Let out proven astrologers do their thing.</div>
+                        </div>
+                        <div class="mt-16 lg:mt-16 flex justify-center lg:flex-shrink-0">
+                            <div class="inline-flex rounded-md shadow overflow-hidden">
+                                <a href="/register"
+                                   class=" inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-500 hover:bg-red-700">
+                                    Get started
+                                </a>
+                            </div>
+                            <div class="ml-3 inline-flex rounded-md shadow overflow-hidden">
+                                <a href="#"
+                                   class=" inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-red-500 bg-white hover:bg-red-50">
+                                    Learn more
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-1">
+                    <img src="https://craftwork.design/wp-content/uploads/edd/Frame-146-4.png"/>
+                </div>
+            </div>
+        </section>
     </div>
 {% endblock %}
