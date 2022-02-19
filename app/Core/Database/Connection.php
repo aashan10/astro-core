@@ -6,7 +6,7 @@ use PDO;
 
 class Connection
 {
-    protected $db;
+    protected ?PDO $db;
     static $instance = null;
 
     protected function __construct(PDO $db)
@@ -33,7 +33,7 @@ class Connection
         return static::$instance;
     }
 
-    public function getDb()
+    public function getDb(): ?PDO
     {
         return $this->db;
     }

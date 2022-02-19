@@ -7,7 +7,9 @@
     "symfony/http-foundation": "^5.4",
     "twig/twig": "^3.0",
     "vlucas/phpdotenv": "^5.4",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "illuminate/session": "*",
+    "league/pipeline": "^1.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^5.4"
@@ -15,7 +17,10 @@
   "autoload": {
     "psr-4": {
       "Astro\\": "app/"
-    }
+    },
+    "files": [
+      "app/Helpers/functions.php"
+    ]
   },
   "authors": [
     {

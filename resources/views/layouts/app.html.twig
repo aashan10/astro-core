@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     {% block head %}
         <link rel="stylesheet" href="/css/style.css"/>
@@ -11,10 +11,8 @@
 {% include 'partials/header.html.twig' %}
 
 
-<div class="bg-gray-200">
-    {% block content %}
-    {% endblock %}
-</div>
+{% block content %}
+{% endblock %}
 
 {% include 'partials/footer.html.twig' %}
 

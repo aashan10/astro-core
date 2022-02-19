@@ -4,30 +4,40 @@ use Astro\Exceptions\InvalidHttpMethodCallException;
 use Astro\Exceptions\RouteNotFoundException;
 use DI\Container;
 use DI\ContainerBuilder;
+use DI\DependencyException;
+use DI\NotFoundException;
 use Dotenv\Dotenv;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Whoops\Handler\Handler;
-use Whoops\Run;
 
 class Application
 {
     /**
      * @var Container
      */
-    protected $container;
+    protected Container $container;
     /**
      * @var Collection
      */
-    protected $routes;
+    protected Collection $routes;
 
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
-    public function __construct()
+    static ?Application $instance = null;
+
+    public static function getInstance(): Application
+    {
+        if (!self::$instance) {
+            self::$instance = new Application();
+        }
+        return self::$instance;
+    }
+
+    protected function __construct()
     {
         $this->initializeEnvironment();
         $this->initializeContainer();
@@ -39,8 +49,10 @@ class Application
     {
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->addDefinitions(BASE_PATH . '/config/app.php');
-        $containerBuilder->enableCompilation(BASE_PATH . '/generated');
-        $containerBuilder->writeProxiesToFile(true, BASE_PATH . '/generated/proxies');
+        if (ev('env') === 'prod') {
+            $containerBuilder->enableCompilation(BASE_PATH . '/generated');
+            $containerBuilder->writeProxiesToFile(true, BASE_PATH . '/generated/proxies');
+        }
 
         $this->container = $containerBuilder->build();
     }
@@ -70,24 +82,28 @@ class Application
             $controller = $this->container->get($controllerName);
             return $this->container->call([$controller, $methodName]);
         } catch (Exception $e) {
-            if($e instanceof RouteNotFoundException) {
+            if ($e instanceof RouteNotFoundException) {
                 $twig = $this->container->get('twig');
-                $response  = $this->container->get(Response::class);
+                $response = $this->container->get(Response::class);
                 return $response->setContent($twig->render('pages/404.html.twig'))->setStatusCode(404)->send();
             }
             throw $e;
         }
     }
 
+    /**
+     * @return void
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws Exception
+     */
     protected function initializeRoutes()
     {
-        if (!$this->routes) {
-            $routesPath = $this->container->get('routes_path');
-            if (!$routesPath) {
-                throw new Exception('Routes not loaded! Please set \'routes_path\' entry in configuration file!');
-            }
-            $this->routes = collect(include $routesPath);
+        $routesPath = $this->container->get('routes_path');
+        if (!$routesPath) {
+            throw new Exception('Routes not loaded! Please set \'routes_path\' entry in configuration file!');
         }
+        $this->routes = collect(include $routesPath);
     }
 
     protected function getPathInfo(): string
@@ -95,6 +111,13 @@ class Application
         return $this->request->getPathInfo();
     }
 
+    /**
+     * @return array
+     * @throws DependencyException
+     * @throws InvalidHttpMethodCallException
+     * @throws NotFoundException
+     * @throws RouteNotFoundException
+     */
     protected function getActiveRoute(): array
     {
         $pathInfo = $this->getPathInfo();
@@ -111,6 +134,16 @@ class Application
         if (!$activeRoute) {
             throw new InvalidHttpMethodCallException($this->getActiveMethod(), $pathInfo);
         }
+        $routeParams = [];
+        if(isset($activeRoute['url']) && strpos($activeRoute['url'],':') > -1) {
+            $pathInfo = $this->container->get(Request::class)->getPathInfo();
+            $parameters = explode(':',$activeRoute['url']);
+            foreach ($parameters as $parameter) {
+
+                dump($parameter);
+            }
+        }
+        $activeRoute['routeParams'] = $routeParams;
         return $activeRoute;
     }
 
@@ -128,5 +161,10 @@ class Application
     {
         $env = Dotenv::createImmutable(BASE_PATH);
         $env->load();
+    }
+
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 }

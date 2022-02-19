@@ -19,6 +19,6 @@ class User extends Model implements AuthenticatableInterface
 {
     use AuthenticatableTrait;
     protected $table = 'users';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'user_id';
 
 }

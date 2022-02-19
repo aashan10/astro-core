@@ -3,10 +3,9 @@ import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {UserCircleIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
 
 const navigation = [
-    {name: 'Home', href: '#', current: true},
-    {name: 'About Us', href: '#', current: false},
-    {name: 'Projects', href: '#', current: false},
-    {name: 'Contact', href: '#', current: false},
+    {name: 'Home', href: '/'},
+    {name: 'About Us', href: '/about-us'},
+    {name: 'Contact', href: '/contact'},
 ]
 
 function classNames(classes: Array<any>) {
@@ -18,7 +17,7 @@ export default function Example() {
         <Disclosure as="div" className="bg-gray-800">
             {({open}) => (
                 <>
-                    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-2">
                         <div className="relative flex items-center justify-between h-16">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -44,11 +43,10 @@ export default function Example() {
                                                 href={item.href}
                                                 className={classNames(
                                                     [
-                                                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                        'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                         'px-3 py-2 rounded-md text-sm font-medium'
                                                     ]
                                                 )}
-                                                aria-current={item.current ? 'page' : undefined}
                                             >
                                                 {item.name}
                                             </a>
@@ -79,8 +77,7 @@ export default function Example() {
                                             className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <Menu.Item>
                                                 {({active}) => (
-                                                    <a
-                                                        href="#"
+                                                    <a href="#"
                                                         className={classNames([active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700'])}
                                                     >
                                                         Your Profile
@@ -122,10 +119,9 @@ export default function Example() {
                                     as="a"
                                     href={item.href}
                                     className={classNames([
-                                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                        'text-gray-300 hover:bg-gray-700 hover:text-white',
                                         'block px-3 py-2 rounded-md text-base font-medium']
                                     )}
-                                    aria-current={item.current ? 'page' : undefined}
                                 >
                                     {item.name}
                                 </Disclosure.Button>

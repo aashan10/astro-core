@@ -25,6 +25,15 @@ $routes = [
         ],
         'method' => 'GET',
     ],
+    'register.post' => [
+        'path' => '/^\/register$/',
+        'url' => '/register',
+        'action' => [
+            'controller' => RegisterController::class,
+            'method' => 'storeUser'
+        ],
+        'method' => 'POST',
+    ],
     'about' => [
         'path' => '/^\/about$/',
         'url' => '/about',

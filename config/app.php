@@ -16,18 +16,14 @@ $twigFactory = factory(function(ContainerInterface  $container){
     ]);
 });
 
-function env(string $name, $default = null) {
-    return $_ENV[$name] ?? $default;
-}
-
 return [
-    'env' => 'dev',
+    'env' => ev('APP_ENV', 'debug'),
     'template_path' => BASE_PATH . '/resources/views',
     'cache_path' => BASE_PATH . '/generated/views',
     'routes_path' => BASE_PATH . '/routes/web.php',
-    'db_dsn' => 'mysql:host=' . env('DB_HOST') . ';dbname=' . env('DB_DATABASE') . ';port=' . env('DB_PORT') . ';charset=utf8',
-    'db_user' => env('DB_USER'),
-    'db_pass' => env('DB_PASSWORD'),
+    'db_dsn' => 'mysql:host=' . ev('DB_HOST') . ';dbname=' . ev('DB_DATABASE') . ';port=' . ev('DB_PORT') . ';charset=utf8',
+    'db_user' => ev('DB_USER'),
+    'db_pass' => ev('DB_PASSWORD'),
     Request::class => factory(function () {
         return Request::createFromGlobals();
     }),

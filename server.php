@@ -12,6 +12,6 @@ if (file_exists(BASE_PATH . '/vendor/autoload.php')) {
 if(file_exists(BASE_PATH . '/boot/Application.php')) {
     require_once BASE_PATH . '/boot/Application.php';
 
-    $app = new Application;
+    $app = Application::getInstance();
     $app->run();
 }
