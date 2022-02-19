@@ -52,6 +52,15 @@ $routes = [
         ],
         'method' => 'GET'
     ],
+    'about-us' => [
+        'path' => '/^\/about-us/',
+        'url' => '/about-us',
+        'action' => [
+            'controller' => HomeController::class,
+            'method' => 'aboutUs'
+        ],
+        'method' => 'GET'
+    ],
 ];
 
 
